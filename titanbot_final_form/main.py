@@ -12,17 +12,15 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f"✅ Logged in as {bot.user}")
-    synced = await bot.tree.sync()
+
+    guild = discord.Object(id=GUILD_ID)
+
+    print("🧹 Clearing old commands...")
+    bot.tree.clear_commands(guild=guild)
+
+    print("🔄 Syncing commands...")
+    synced = await bot.tree.sync(guild=guild)
+
     print(f"✅ Synced {len(synced)} commands")
-
-async def load_cogs():
-    for f in os.listdir("./cogs"):
-        if f.endswith(".py"):
-            await bot.load_extension(f"cogs.{f[:-3]}")
-
-async def main():
-    async with bot:
-        await load_cogs()
-        await bot.start(TOKEN)
 
 asyncio.run(main())
