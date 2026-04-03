@@ -15,12 +15,18 @@ async def on_ready():
 
     guild = discord.Object(id=GUILD_ID)
 
-    print("🧹 Clearing old commands...")
+    # 🔥 FULL RESET
+    print("🧹 Clearing ALL commands...")
     bot.tree.clear_commands(guild=guild)
+
+    await asyncio.sleep(1)
 
     print("🔄 Syncing commands...")
     synced = await bot.tree.sync(guild=guild)
 
     print(f"✅ Synced {len(synced)} commands")
+
+    for cmd in synced:
+        print(f"➡️ /{cmd.name}")
 
 asyncio.run(main())
